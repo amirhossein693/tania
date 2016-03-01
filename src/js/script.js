@@ -1,3 +1,3 @@
-;(function ($) {
+require('jquery');
 
-})(jQuery);
+require('imports?jQuery=jquery!../../vendor/bootstrap-sass/assets/javascripts/bootstrap.js');

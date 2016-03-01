@@ -2,7 +2,7 @@ name = Tania
 description = Tania theme
 core = 7.x
 
-scripts[] = dist/js/script.js
+scripts[] = dist/js/script.bundle.js
 
 regions[header] = Header
 regions[navigation] = Navigation

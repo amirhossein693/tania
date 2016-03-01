@@ -4,18 +4,8 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    jshint: {
-      // define the files to lint
-      files: ['gruntfile.js', 'src/js/*.js'],
-      // configure JSHint (documented at http://www.jshint.com/docs/)
-      options: {
-        // more options here if you want to override JSHint defaults
-        globals: {
-          jQuery: true,
-          console: true,
-          module: true
-        }
-      }
+    eslint: {
+      target: ['src/js/*.js', 'src/js/**/*.js']
     },
 
     uglify: {
@@ -118,7 +108,45 @@ module.exports = function(grunt) {
             },
           },
       }
-    },  
+    },
+
+    webpack: {
+      build: {
+          // webpack options
+          entry: "./src/js/script.js",
+          output: {
+            path: "dist/js/",
+            filename: "script.bundle.js",
+          },
+
+          stats: {
+            // Configure the console output
+            colors: false,
+            modules: true,
+            reasons: true
+          },
+          // stats: false disables the stats output
+
+          storeStatsTo: "xyz", // writes the status to a variable named xyz
+          // you may use it later in grunt i.e. <%= xyz.hash %>
+
+          progress: false, // Don't show progress
+          // Defaults to true
+
+          failOnError: false, // don't report error to grunt if webpack find errors
+          // Use this if webpack errors are tolerable and grunt should continue
+
+          watch: true, // use webpacks watcher
+          // You need to keep the grunt process alive
+
+          keepalive: true, // don't finish the grunt task
+          // Use this in combination with the watch option
+
+          inline: true,  // embed the webpack-dev-server runtime into the bundle
+          // Defaults to false
+
+        }
+    },
 
     watch: {
       scss: {
@@ -152,7 +180,6 @@ module.exports = function(grunt) {
 
   // module(s)
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-autoprefixer');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -160,10 +187,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-webfont');
+  grunt.loadNpmTasks('grunt-webpack');
+  grunt.loadNpmTasks('grunt-eslint');
 
   // task(s).
   grunt.registerTask('build', [
-                                'jshint',
+                                'eslint',
+                                'webpack',
                                 'clean:build',
                                 'webfont:build',
                                 'compass:build',
@@ -174,7 +204,8 @@ module.exports = function(grunt) {
                               ]);
 
   grunt.registerTask('serve', [
-                                'jshint',
+                                'eslint',
+                                'webpack',
                                 'clean:build',
                                 'webfont:build',
                                 'sass:app',

@@ -86,3 +86,40 @@ function tania_button($variables) {
 
     return '<input' . drupal_attributes($element['#attributes']) . ' />';
 }
+
+function tania_status_messages($variables) {
+    $display = $variables['display'];
+    $output = '';
+
+    $status_heading = array(
+        'status' => t('Status message'),
+        'error' => t('Error message'),
+        'warning' => t('Warning message'),
+    );
+
+    $status_class = array(
+        'status' => 'success',
+        'error' => 'danger',
+        'warning' => 'warning',
+    );
+
+    foreach (drupal_get_messages($display) as $type => $messages) {
+        $output .= "<div class=\"alert alert-$status_class[$type]\">\n";
+        $output .= "<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>";
+        if (!empty($status_heading[$type])) {
+            $output .= '<h2 class="element-invisible">' . $status_heading[$type] . "</h2>\n";
+        }
+        if (count($messages) > 1) {
+            $output .= " <ul>\n";
+            foreach ($messages as $message) {
+                $output .= '  <li>' . $message . "</li>\n";
+            }
+            $output .= " </ul>\n";
+        }
+        else {
+            $output .= reset($messages);
+        }
+        $output .= "</div>\n";
+    }
+    return $output;
+}
