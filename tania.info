@@ -1,0 +1,13 @@
+name = Tania
+description = Tania theme
+core = 7.x
+
+scripts[] = dist/js/script.js
+
+regions[header] = Header
+regions[navigation] = Navigation
+regions[highlighted] = Highlighted
+regions[help] = Help
+regions[content] = Content
+regions[sidebar] = Sidebar
+regions[footer] = Footer
