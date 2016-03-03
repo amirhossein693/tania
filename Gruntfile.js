@@ -77,7 +77,7 @@ module.exports = function(grunt) {
           expand: true,
           dot: true,
           cwd: 'src/',
-          src: ['**/*', '!scss/**'],
+          src: ['**/*', '!scss/**', '!js/**'],
           dest: 'dist/'
         }],
       },
@@ -86,7 +86,7 @@ module.exports = function(grunt) {
           expand: true,
           dot: true,
           cwd: 'src/',
-          src: ['**/*', '!scss/**'],
+          src: ['**/*', '!scss/**', '!js/**'],
           dest: 'dist/'
         }],
       },      
@@ -136,10 +136,10 @@ module.exports = function(grunt) {
           failOnError: false, // don't report error to grunt if webpack find errors
           // Use this if webpack errors are tolerable and grunt should continue
 
-          watch: true, // use webpacks watcher
+          watch: false, // use webpacks watcher
           // You need to keep the grunt process alive
 
-          keepalive: true, // don't finish the grunt task
+          keepalive: false, // don't finish the grunt task
           // Use this in combination with the watch option
 
           inline: true,  // embed the webpack-dev-server runtime into the bundle
@@ -151,21 +151,21 @@ module.exports = function(grunt) {
     watch: {
       scss: {
         files: ['src/scss/**'],
-        tasks: ['compass:build', 'autoprefixer:build', 'copy:serve'],
+        tasks: ['sass:app', 'autoprefixer:build', 'copy:serve'],
         options: {
           spawn: false,
         },
       },
       js: {
         files: ['src/js/**'],
-        tasks: ['jshint', 'copy:serve'],
+        tasks: ['eslint', 'copy:serve'],
         options: {
           spawn: false,
         },
       },
       images: {
         files: ['src/images/**'],
-        tasks: ['webfont:build', 'compass:build', 'autoprefixer:build',  'copy:serve'],
+        tasks: ['webfont:build', 'sass:app', 'autoprefixer:build',  'copy:serve'],
         options: {
           spawn: false,
         },
@@ -193,24 +193,24 @@ module.exports = function(grunt) {
   // task(s).
   grunt.registerTask('build', [
                                 'eslint',
-                                'webpack',
                                 'clean:build',
                                 'webfont:build',
-                                'compass:build',
+                                'sass:app',
                                 'autoprefixer:build',
                                 'copy:build',
+                                'webpack',
                                 'uglify:build',
                                 'cssmin:build'
                               ]);
 
   grunt.registerTask('serve', [
                                 'eslint',
-                                'webpack',
                                 'clean:build',
                                 'webfont:build',
                                 'sass:app',
                                 'autoprefixer:build',
                                 'copy:serve',
+                                'webpack',
                                 'watch'
                               ]);  
 
