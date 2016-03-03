@@ -1,3 +1,14 @@
+'use strict';
+
+var path = require('path');
+
+var fs = require('fs');
+
+var _ = require('lodash');
+
+var webpack = require('webpack');
+
+
 module.exports = function(grunt) {
 
   // Project configuration.
@@ -5,6 +16,9 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     eslint: {
+      options: {
+        configFile: path.resolve(__dirname + '/.eslintrc')
+      },
       target: ['src/js/*.js', 'src/js/**/*.js']
     },
 
@@ -114,17 +128,50 @@ module.exports = function(grunt) {
       build: {
           // webpack options
           entry: "./src/js/script.js",
+
           output: {
             path: "dist/js/",
             filename: "script.bundle.js",
           },
 
+          devtool: 'inline-source-map',
+
+          plugins: [
+            new webpack.ProvidePlugin({
+              _: 'lodash' // let me use lodash as ejs engine (ejs-loader requirement)
+            })
+          ],
+
+          module: {
+            loaders: [
+              { test: /\.ejs$/, loader: 'ejs-loader' },
+              { test: /jquery\.js$/, loader: 'expose?jQuery' },
+              { test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules|vendor/}
+            ]
+          },
+
+          resolve: {
+            root: [
+              path.resolve(__dirname + '/src/')
+            ],
+            modulesDirectories: [
+              'node_modules',
+              'web_modules',
+              'vendor'
+            ]
+          },
+
+          eslint: {
+            configFile: path.resolve(__dirname + '/.eslintrc')
+          },
+
           stats: {
             // Configure the console output
-            colors: false,
+            colors: true,
             modules: true,
             reasons: true
           },
+
           // stats: false disables the stats output
 
           storeStatsTo: "xyz", // writes the status to a variable named xyz
@@ -133,7 +180,7 @@ module.exports = function(grunt) {
           progress: false, // Don't show progress
           // Defaults to true
 
-          failOnError: false, // don't report error to grunt if webpack find errors
+          failOnError: true, // don't report error to grunt if webpack find errors
           // Use this if webpack errors are tolerable and grunt should continue
 
           watch: false, // use webpacks watcher
