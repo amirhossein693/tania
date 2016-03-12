@@ -11,3 +11,4 @@ regions[help] = Help
 regions[content] = Content
 regions[sidebar] = Sidebar
 regions[footer] = Footer
+regions[copyright] = Copyright

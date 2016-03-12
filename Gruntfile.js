@@ -15,13 +15,6 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    eslint: {
-      options: {
-        configFile: path.resolve(__dirname + '/.eslintrc')
-      },
-      target: ['src/js/*.js', 'src/js/**/*.js']
-    },
-
     uglify: {
       build: {
         files: [{
@@ -156,7 +149,6 @@ module.exports = function(grunt) {
             ],
             modulesDirectories: [
               'node_modules',
-              'web_modules',
               'vendor'
             ]
           },
@@ -166,21 +158,13 @@ module.exports = function(grunt) {
           },
 
           stats: {
-            // Configure the console output
             colors: true,
             modules: true,
             reasons: true
           },
 
-          // stats: false disables the stats output
 
-          storeStatsTo: "xyz", // writes the status to a variable named xyz
-          // you may use it later in grunt i.e. <%= xyz.hash %>
-
-          progress: false, // Don't show progress
-          // Defaults to true
-
-          failOnError: true, // don't report error to grunt if webpack find errors
+          failOnError: false, // don't report error to grunt if webpack find errors
           // Use this if webpack errors are tolerable and grunt should continue
 
           watch: false, // use webpacks watcher
@@ -205,7 +189,7 @@ module.exports = function(grunt) {
       },
       js: {
         files: ['src/js/**'],
-        tasks: ['eslint', 'copy:serve'],
+        tasks: ['webpack', 'copy:serve'],
         options: {
           spawn: false,
         },
@@ -239,7 +223,6 @@ module.exports = function(grunt) {
 
   // task(s).
   grunt.registerTask('build', [
-                                'eslint',
                                 'clean:build',
                                 'webfont:build',
                                 'sass:app',
@@ -251,7 +234,6 @@ module.exports = function(grunt) {
                               ]);
 
   grunt.registerTask('serve', [
-                                'eslint',
                                 'clean:build',
                                 'webfont:build',
                                 'sass:app',

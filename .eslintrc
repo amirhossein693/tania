@@ -21,7 +21,7 @@
         "jsx": false
     },
     "rules": {
-        "strict": [2, "global"],          // http://eslint.org/docs/rules/strict
+        "strict": [2, "never"],         // http://eslint.org/docs/rules/strict
         "no-var": 0,                     // http://eslint.org/docs/rules/no-var
         "comma-dangle": [2, "never"],    // http://eslint.org/docs/rules/comma-dangle
         "padded-blocks": [1, "never"],   // http://eslint.org/docs/rules/padded-blocks
@@ -34,6 +34,6 @@
         "no-unused-vars": [1, {          // http://eslint.org/docs/rules/no-unused-vars
           "vars": "local",
           "args": "after-used"
-        }],
+        }]
     }
 }
